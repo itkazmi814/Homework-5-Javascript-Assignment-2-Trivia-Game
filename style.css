@@ -1,11 +1,30 @@
 .main-content{
 	width: 80%;
 	font-color: red;
+}
 
+.list-group-item{
+	border: none;
 }
 
 .inner-content{
 	width: 80%
-
+	border: none;
 }
 
+#main-header{
+	border: none;
+}
+
+#answer-container{
+	border: none;
+	border-width: 0px;
+}
+
+#title-container{
+	border: none;
+}
+
+#time-container{
+	border: none;
+}
