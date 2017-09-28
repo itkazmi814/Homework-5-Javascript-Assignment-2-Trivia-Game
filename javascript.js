@@ -8,13 +8,12 @@ var game = {
 	questionArray: [],
 	mainIntervalID: null,
 	sideInternvalID: null,
+	timerID: null,
 	time: 30,
 	clockRunning: false,
-	i: 1,
+	i: -1,
+	resultsFlag: false,
 
-	pageInitialization: function () {
-		this.createQuestions();
-	},
 
 	questionGenerator: function (titleInput, choicesInput, answerInput) {
 		//creates a question object
@@ -33,49 +32,60 @@ var game = {
 		this.questionArray.push(questionThree);
 	}, //end function createCharacters
 
-	startButtonPressed: function () {
-		console.log("start button pressed")
-		numCorrect = 0;
-		numIncorrect = 0;
-		numUnanswered = 0;
-		mainIntervalID = null;
-		sideInternvalID = null;
+	reset: function () {
+		game.numCorrect = 0;
+		game.numIncorrect = 0;
+		game.numUnanswered = 0;
+		game.timerIntervalID = null;
+		game.mainTimeID = null;
+		game.sideTimeID = null;
 		$("#title-container").html('<h2 id="title-box"></h2>')
 		$(".possible-answer").addClass("list-group-item-action")
-		game.startGame();
+		game.i = 0;
+
+		game.nextQuestion();
+
 	},
 
-	startGame: function () {
-			//display question details
-			this.initializeNewQuestion();
-			//run when you click on an answer
-			$(".possible-answer").on("click", this.determineResult)
-			//runs when time runs outs
-			if(this.time === 0){
-				this.determineResult();
-			}
+	nextQuestion: function () {
+		console.log("start new question")
+		//display question details
+		game.initializeNewQuestion();
+		//start timer
+		game.timerIntervalID = setInterval(game.countTime,1000)
+		//run when you click on an answer
+		$(".possible-answer").on("click", game.determineResult)
 
-	}, //end function startGame
+	},
+
+	initializeNewQuestion: function () {
+		this.time = 10
+		$("#time-box").text(this.time + " seconds remaining");
+		this.updateQuestionTitle();
+		this.displayPossibleChoices();
+	}, //end function initializeNewQuestion
 
 	determineResult: function () {
-		console.log("entering determine result")
-
 		$(".possible-answer").removeClass("list-group-item-action")
+		clearInterval(game.timerIntervalID);
 
-		game.time = 3;
 		if(game.time === 0){
 			$("#title-box").text("You ran out of time");
 			game.numUnanswered++;
-			game.displayResults();
 		}else if($(this).text() === game.questionArray[game.i].answer){
 			$("#title-box").text("Stop cheating");
 			game.numCorrect++;
-			game.displayResults();
 		}else{ 
 			$("#title-box").text("Wrong answer");
 			game.numIncorrect++;
-			game.displayResults();
 		}
+
+		$("#answer-box").empty();
+		$("#answer-box").append('<li class="list-group-item">' + ' The answer is: ' + game.questionArray[game.i].answer + '</li>')
+		$("#answer-box").append('<li class="list-group-item">' + 'Insert image here' + '</li>')
+
+		game.sideIntervalID = setTimeout(game.checkForNextQuestion,3000);
+
 	}, //end function clickedAnswer
 
 	countTime: function () {
@@ -83,7 +93,7 @@ var game = {
 		$("#time-box").text(game.time + " seconds remaining");
 		
 		if(game.time === 0){
-			game.displayResults();
+			game.determineResult();
 		}
 	}, //end function countTime
 	
@@ -92,38 +102,43 @@ var game = {
 	}, //end function updateQuestionTitle
 
 	displayPossibleChoices: function () {
+		$("#answer-box").empty();
+
 		for(var j = 0; j < this.questionArray[this.i].choices.length; j++){
 			$("#answer-box").append('<li id="choice'+(j+1)+'" class="possible-answer list-group-item list-group-item-action">'+this.questionArray[this.i].choices[j]+'</li>');
 		} //end for loop
 	}, //end function displayPossibleChoices
 
-	displayResults: function () {
-		console.log("entering results");
-		this.time = 3;
-		$("#answer-box").empty();
+
+	checkForNextQuestion: function () {
+		console.log("testlog")
+		game.i++;
+		console.log(game.i)
+		if(game.i < game.questionArray.length){
+			game.nextQuestion();
+		}else{
+			game.displayEndScreen();
+		}
 		
-		$("#answer-box").append('<li class="list-group-item">' + this.questionArray[this.i].answer + '</li>')
-		$("#answer-box").append('<li class="list-group-item">' + 'Insert image here' + '</li>')
+	},
 
-		console.log("correct: " + this.numCorrect + " incorrect: " + this.numIncorrect +  " Unanswered: " + this.numUnanswered)
+	displayEndScreen: function () {
+		console.log("Display end screen")
+		$("#answer-box").empty();
+		$("#time-box").html('<h5 id="start-button" class="list-group-item-action">' + "Play Again?" + '</h5>');
+		$("#title-box").text("How did you do?")
+		$("#answer-box").append('<li class="list-group-item">' + 'Correct: ' + this.numCorrect + '</li>');
+		$("#answer-box").append('<li class="list-group-item">' + 'Incorrect: ' + this.numIncorrect + '</li>');
+		$("#answer-box").append('<li class="list-group-item">' + 'Unanswered: ' + this.numUnanswered + '</li>');
 
-	}, //end function displayCorrectAnswer
-
-	initializeNewQuestion: function () {
-		this.time = 5
-		$("#time-box").text(this.time + " seconds remaining");
-	
-		this.updateQuestionTitle();
-		this.displayPossibleChoices();
-
-	
-	} //end function initializeNewQuestion
+		$("#start-button").on("click", game.reset);
+	}
 
 } // end object game
 
 
-game.pageInitialization();
-$("#start-button").on("click", game.startButtonPressed);
+game.createQuestions();
+$("#start-button").on("click", game.reset);
 
 // game.initializeNewQuestion();
 
