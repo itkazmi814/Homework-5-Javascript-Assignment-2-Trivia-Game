@@ -6,9 +6,11 @@ var game = {
 	numIncorrect: 0,
 	numUnanswered: 0,
 	questionArray: [],
-	intervalID: null,
+	mainIntervalID: null,
+	sideInternvalID: null,
 	time: 30,
 	clockRunning: false,
+	i: 1,
 
 	pageInitialization: function () {
 		this.createQuestions();
@@ -18,7 +20,7 @@ var game = {
 		//creates a question object
 		this.title = titleInput;
 		this.choices = choicesInput;
-		this.answer = answerInput;		
+		this.answer = answerInput;
 	}, // end function questionGenerator
 
 	createQuestions: function () {
@@ -36,27 +38,43 @@ var game = {
 		numCorrect = 0;
 		numIncorrect = 0;
 		numUnanswered = 0;
-		intervalID = null;
-		
+		mainIntervalID = null;
+		sideInternvalID = null;
+		$("#title-container").html('<h2 id="title-box"></h2>')
+		$(".possible-answer").addClass("list-group-item-action")
 		game.startGame();
 	},
 
 	startGame: function () {
-		//display question details
-		this.initializeNewQuestion();
-		//run when you click on an answer
-		$(".possible-answer").on("click",this.clickedAnswer)
-
+			//display question details
+			this.initializeNewQuestion();
+			//run when you click on an answer
+			$(".possible-answer").on("click", this.determineResult)
+			//runs when time runs outs
+			if(this.time === 0){
+				this.determineResult();
+			}
 
 	}, //end function startGame
 
-	clickedAnswer: function () {
-		//stops the timer
-		clearInterval(game.intervalID)
-		console.log(this)
+	determineResult: function () {
+		console.log("entering determine result")
 
-		if(this.id === 0){
+		$(".possible-answer").removeClass("list-group-item-action")
 
+		game.time = 3;
+		if(game.time === 0){
+			$("#title-box").text("You ran out of time");
+			game.numUnanswered++;
+			game.displayResults();
+		}else if($(this).text() === game.questionArray[game.i].answer){
+			$("#title-box").text("You are correct");
+			game.numCorrect++;
+			game.displayResults();
+		}else{ 
+			$("#title-box").text("Wrong answer");
+			game.numIncorrect++;
+			game.displayResults();
 		}
 	}, //end function clickedAnswer
 
@@ -70,36 +88,42 @@ var game = {
 	}, //end function countTime
 	
 	updateQuestionTitle: function () {
-		// clearInterval(callQ);
-		console.log(this)
-		$("#title-box").text(this.questionArray[1].title);
+		$("#title-box").text(this.questionArray[this.i].title);
 	}, //end function updateQuestionTitle
 
 	displayPossibleChoices: function () {
-		for(var i = 0; i < this.questionArray[1].choices.length; i++){
-			$("#choice"+(i+1)).text(this.questionArray[1].choices[i]);
+		for(var j = 0; j < this.questionArray[this.i].choices.length; j++){
+			$("#answer-box").append('<li id="choice'+(j+1)+'" class="possible-answer list-group-item list-group-item-action">'+this.questionArray[this.i].choices[j]+'</li>');
 		} //end for loop
 	}, //end function displayPossibleChoices
 
 	displayResults: function () {
-		console.log("entering results")
-		$("#choice1").text(this.questionArray[1].answer);
+		console.log("entering results");
+		this.time = 3;
+		$("#answer-box").empty();
+		
+		$("#answer-box").append('<li class="list-group-item">' + this.questionArray[this.i].answer + '</li>')
+		$("#answer-box").append('<li class="list-group-item">' + 'Insert image here' + '</li>')
+
+		console.log("correct: " + this.numCorrect + " incorrect: " + this.numIncorrect +  " Unanswered: " + this.numUnanswered)
+
 	}, //end function displayCorrectAnswer
 
 	initializeNewQuestion: function () {
-		this.time = 30
-		$("#time-box").text("30 seconds remaining");
+		this.time = 5
+		$("#time-box").text(this.time + " seconds remaining");
+	
 		this.updateQuestionTitle();
 		this.displayPossibleChoices();
-		this.intervalID = setInterval(this.countTime,1000)
+
+	
 	} //end function initializeNewQuestion
 
 } // end object game
 
 
 game.pageInitialization();
-$("#title-box").on("click", game.startButtonPressed);
-
+$("#start-button").on("click", game.startButtonPressed);
 
 // game.initializeNewQuestion();
 
