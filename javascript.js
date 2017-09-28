@@ -16,36 +16,42 @@ var game = {
 			title: "Which Thomas Keller restaurant was rated best restaurant in the world in 2004?",
 			choices: ["Noma","Osteria Francescana","The French Laundry","The Fat Duck"],
 			answer: "The French Laundry",
+			image: "assets/thefrenchlaundry.jpg"
 		},
 
 		questionTwo = {
 			title: "Where is the best fish sandwich in Chicago?",
 			choices: ["MicDuck's","Paron's","Big & Little's","Jim's Original"],
 			answer: "Jim's Original",
+			image: "assets/jims.jpg"
 		},
 
 		questionThree = {
 			title: "What American restaurant was rated #3 in the world in 2016 and #1 in 2017?",
 			choices: ["Per Se","Eleven Madison Park","Alinea","Le Bernardin"],
 			answer: "Eleven Madison Park",
+			image: "assets/elevenmadisonpark.jpg"
 		},
 
 		questionFour = {
 			title: "What is the most overrated restaurant in Chicago?",
 			choices: ["Avec","High Five Ramen","Chicago Cut Steakhouse","Giordano's"],
 			answer: "Avec",
+			image: "assets/avec.jpg"
 		},
 
 		questionFive = {
 			title: "What Chef brought Mexican food to the forefront of contemporary fine dining when he opened Frontera Grill?",
 			choices: ["Joel Robuchon","Rick Bayless","Daniel Humm","Rene Redzepi"],
-			answer: "Rick Bayless"
+			answer: "Rick Bayless",
+			image: "assets/frontera.jpg"
 		},
 
 		questionSix = {
 			title: "Which of the following do not belong to the same restaurant group under Chef Grant Achatz?",
 			choices: ["Roister","Next","Alinea","Grace"],
-			answer: "Grace"
+			answer: "Grace",
+			iamge: "assets/alinea.jpg"
 		}
 
 	],
@@ -88,7 +94,7 @@ var game = {
 	},
 
 	initializeNewQuestion: function () {
-		this.time = 10
+		this.time = 20
 		$("#time-box").text(this.time + " seconds remaining");
 		this.updateQuestionTitle();
 		this.displayPossibleChoices();
@@ -116,9 +122,9 @@ var game = {
 		answerDiv.text(game.questionArray[game.i].answer)
 		$("#answer-box").append(answerDiv);
 
-		var imageDiv = $("<li>");
+		var imageDiv = $("<img>");
 		imageDiv.addClass("list-group-item");
-		imageDiv.text("Insert image here");
+		imageDiv.attr("src",game.questionArray[game.i].image);
 		$("#answer-box").append(imageDiv);
 
 		game.sideIntervalID = setTimeout(game.checkForNextQuestion,3000);
