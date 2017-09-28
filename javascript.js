@@ -68,7 +68,7 @@ var game = {
 			game.numUnanswered++;
 			game.displayResults();
 		}else if($(this).text() === game.questionArray[game.i].answer){
-			$("#title-box").text("You are correct");
+			$("#title-box").text("Stop cheating");
 			game.numCorrect++;
 			game.displayResults();
 		}else{ 
