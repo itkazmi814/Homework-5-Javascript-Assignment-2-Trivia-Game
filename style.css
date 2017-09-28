@@ -1,6 +1,10 @@
+body{
+	background-image: url("assets/doodles.png");
+}
+
 .main-content{
 	width: 80%;
-	font-color: red;
+	background-color: rgba(255,255,255,.7);
 }
 
 .list-group-item{
@@ -15,11 +19,17 @@
 #answer-container{
 	border: none;
 	border-width: 0px;
+	background-color: rgba(255,255,255,.7);
 }
 
 #answer-box{
 	width: 50%;
 	margin: auto;
+	background-color: rgba(255,255,255,.7);
+}
+
+#title-box{
+	width: 80%;
 }
 
 #start-button{

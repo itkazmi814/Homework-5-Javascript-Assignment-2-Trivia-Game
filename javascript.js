@@ -8,74 +8,55 @@ var game = {
 	mainTimeID: null,
 	sideTimeID: null,
 	timerID: null,
-	time: 30,
+	time: 30, 	
 	i: -1,
 
 	questionArray: [
 		questionOne = {
-			title: "This is question one?",
-			choices: ["Answer 1 Q1","Answer 2 Q1","Answer 3 Q1"],
-			answer: "Answer 3 Q1",
+			title: "Which Thomas Keller restaurant was rated best restaurant in the world in 2004?",
+			choices: ["Noma","Osteria Francescana","The French Laundry","The Fat Duck"],
+			answer: "The French Laundry",
 		},
 
 		questionTwo = {
-			title: "This is question two?",
-			choices: ["Answer 1 Q2","Answer 2 Q2","Answer 3 Q2"],
-			answer: "Answer 3 Q2",
+			title: "Where is the best fish sandwich in Chicago?",
+			choices: ["MicDuck's","Paron's","Big & Little's","Jim's Original"],
+			answer: "Jim's Original",
 		},
 
 		questionThree = {
-			title: "This is question three?",
-			choices: ["Answer 1 Q3","Answer 2 Q3","Answer 3 Q3"],
-			answer: "Answer 3 Q3",
+			title: "What American restaurant was rated #3 in the world in 2016 and #1 in 2017?",
+			choices: ["Per Se","Eleven Madison Park","Alinea","Le Bernardin"],
+			answer: "Eleven Madison Park",
 		},
 
 		questionFour = {
-			title: "This is question four?",
-			choices: ["Answer 1 Q4","Answer 2 Q4","Answer 3 Q4"],
-			answer: "Answer 3 Q4",
+			title: "What is the most overrated restaurant in Chicago?",
+			choices: ["Avec","High Five Ramen","Chicago Cut Steakhouse","Giordano's"],
+			answer: "Avec",
 		},
-],
 
+		questionFive = {
+			title: "What Chef brought Mexican food to the forefront of contemporary fine dining when he opened Frontera Grill?",
+			choices: ["Joel Robuchon","Rick Bayless","Daniel Humm","Rene Redzepi"],
+			answer: "Rick Bayless"
+		},
 
+		questionSix = {
+			title: "Which of the following do not belong to the same restaurant group under Chef Grant Achatz?",
+			choices: ["Roister","Next","Alinea","Grace"],
+			answer: "Grace"
+		}
 
-
-
-
-
-	// createQuestions: function () {
-	// 	var questionOne = new this.questionGenerator("This is question one?",["Answer 1 Q1","Answer 2 Q1","Answer 3 Q1"],"Answer 3 Q1");
-	// 	var questionTwo = new this.questionGenerator("This is question two?",["Answer 1 Q2","Answer 2 Q2","Answer 3 Q2","Answer 4 Q2","Answer 5 Q2","Answer 6 Q2"],"Answer 3 Q2");
-	// 	var questionThree = new this.questionGenerator("This is question three?",["Answer 1 Q3","Answer 2 Q3","Answer 3 Q3","Answer 4 Q3"],"Answer 3 Q3");
-		
-	// 	this.questionArray.push(questionOne);
-	// 	this.questionArray.push(questionTwo);
-	// 	this.questionArray.push(questionThree);
-	// }, //end function createCharacters
-
-
-
-	// questionGenerator: function (titleInput, choicesInput, answerInput) {
-	// 	//creates a question object
-	// 	this.title = titleInput;
-	// 	this.choices = choicesInput;
-	// 	this.answer = answerInput;
-	// }, // end function questionGenerator
+	],
 
 	initializePage: function () {
-		// $("#title-container").html('<h2 id="start-button" class="btn btn-secondary btn-lg btn-outline-secondary">Start!</h2>');
-
-		// $("title-container").empty();
 		var newStartButton = $("<h2>");
 		newStartButton.addClass("btn btn-secondary btn-lg btn-outline-secondary");
 		newStartButton.attr("id","start-button");
 		newStartButton.text("Start!");
 		$("#title-container").append(newStartButton);
-
-		// game.createQuestions();
 	},
-
-	
 
 	reset: function () {
 		game.numCorrect = 0;
@@ -104,7 +85,6 @@ var game = {
 		game.timerIntervalID = setInterval(game.countTime,1000)
 		//run when you click on an answer
 		$(".possible-answer").on("click", game.determineResult)
-
 	},
 
 	initializeNewQuestion: function () {
@@ -133,19 +113,19 @@ var game = {
 
 		var answerDiv = $("<li>");
 		answerDiv.addClass("list-group-item");
-		answerDiv.text("The answer is: " + game.questionArray[game.i].answer)
+		answerDiv.text(game.questionArray[game.i].answer)
 		$("#answer-box").append(answerDiv);
 
 		var imageDiv = $("<li>");
 		imageDiv.addClass("list-group-item");
 		imageDiv.text("Insert image here");
+		$("#answer-box").append(imageDiv);
 
 		game.sideIntervalID = setTimeout(game.checkForNextQuestion,3000);
 
 	}, //end function clickedAnswer
 
 	checkForNextQuestion: function () {
-		console.log("testlog")
 		game.i++;
 		console.log(game.i)
 		if(game.i < game.questionArray.length){
@@ -181,7 +161,6 @@ var game = {
 	}, //end function displayPossibleChoices
 
 	displayEndScreen: function () {
-		console.log("Display end screen")
 		$("#answer-box").empty();
 		$("#time-box").empty();
 		
