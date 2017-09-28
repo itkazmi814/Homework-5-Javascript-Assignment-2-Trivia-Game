@@ -5,34 +5,77 @@ var game = {
 	numCorrect: 0,
 	numIncorrect: 0,
 	numUnanswered: 0,
-	questionArray: [],
 	mainTimeID: null,
 	sideTimeID: null,
 	timerID: null,
 	time: 30,
 	i: -1,
 
-	questionGenerator: function (titleInput, choicesInput, answerInput) {
-		//creates a question object
-		this.title = titleInput;
-		this.choices = choicesInput;
-		this.answer = answerInput;
-	}, // end function questionGenerator
+	questionArray: [
+		questionOne = {
+			title: "This is question one?",
+			choices: ["Answer 1 Q1","Answer 2 Q1","Answer 3 Q1"],
+			answer: "Answer 3 Q1",
+		},
+
+		questionTwo = {
+			title: "This is question two?",
+			choices: ["Answer 1 Q2","Answer 2 Q2","Answer 3 Q2"],
+			answer: "Answer 3 Q2",
+		},
+
+		questionThree = {
+			title: "This is question three?",
+			choices: ["Answer 1 Q3","Answer 2 Q3","Answer 3 Q3"],
+			answer: "Answer 3 Q3",
+		},
+
+		questionFour = {
+			title: "This is question four?",
+			choices: ["Answer 1 Q4","Answer 2 Q4","Answer 3 Q4"],
+			answer: "Answer 3 Q4",
+		},
+],
+
+
+
+
+
+
+
+	// createQuestions: function () {
+	// 	var questionOne = new this.questionGenerator("This is question one?",["Answer 1 Q1","Answer 2 Q1","Answer 3 Q1"],"Answer 3 Q1");
+	// 	var questionTwo = new this.questionGenerator("This is question two?",["Answer 1 Q2","Answer 2 Q2","Answer 3 Q2","Answer 4 Q2","Answer 5 Q2","Answer 6 Q2"],"Answer 3 Q2");
+	// 	var questionThree = new this.questionGenerator("This is question three?",["Answer 1 Q3","Answer 2 Q3","Answer 3 Q3","Answer 4 Q3"],"Answer 3 Q3");
+		
+	// 	this.questionArray.push(questionOne);
+	// 	this.questionArray.push(questionTwo);
+	// 	this.questionArray.push(questionThree);
+	// }, //end function createCharacters
+
+
+
+	// questionGenerator: function (titleInput, choicesInput, answerInput) {
+	// 	//creates a question object
+	// 	this.title = titleInput;
+	// 	this.choices = choicesInput;
+	// 	this.answer = answerInput;
+	// }, // end function questionGenerator
 
 	initializePage: function () {
-		$("#title-container").html('<h2 id="start-button" class="btn btn-secondary btn-lg btn-outline-secondary">Start!</h2>');
-		game.createQuestions();
+		// $("#title-container").html('<h2 id="start-button" class="btn btn-secondary btn-lg btn-outline-secondary">Start!</h2>');
+
+		// $("title-container").empty();
+		var newStartButton = $("<h2>");
+		newStartButton.addClass("btn btn-secondary btn-lg btn-outline-secondary");
+		newStartButton.attr("id","start-button");
+		newStartButton.text("Start!");
+		$("#title-container").append(newStartButton);
+
+		// game.createQuestions();
 	},
 
-	createQuestions: function () {
-		var questionOne = new this.questionGenerator("This is question one?",["Answer 1 Q1","Answer 2 Q1","Answer 3 Q1"],"Answer 3 Q1");
-		var questionTwo = new this.questionGenerator("This is question two?",["Answer 1 Q2","Answer 2 Q2","Answer 3 Q2","Answer 4 Q2","Answer 5 Q2","Answer 6 Q2"],"Answer 3 Q2");
-		var questionThree = new this.questionGenerator("This is question three?",["Answer 1 Q3","Answer 2 Q3","Answer 3 Q3","Answer 4 Q3"],"Answer 3 Q3");
-		
-		this.questionArray.push(questionOne);
-		this.questionArray.push(questionTwo);
-		this.questionArray.push(questionThree);
-	}, //end function createCharacters
+	
 
 	reset: function () {
 		game.numCorrect = 0;
@@ -41,8 +84,13 @@ var game = {
 		game.timerIntervalID = null;
 		game.mainTimeID = null;
 		game.sideTimeID = null;
-		$("#title-container").html('<h2 id="title-box"></h2>')
+
 		$(".possible-answer").addClass("list-group-item-action")
+
+		$("#title-container").empty();
+		$("#title-container").attr("id","title-box");
+		$("#title-container").addClass("inner-content no-border");
+
 		game.i = 0;
 
 		game.nextQuestion();
@@ -82,8 +130,15 @@ var game = {
 		}
 
 		$("#answer-box").empty();
-		$("#answer-box").append('<li class="list-group-item">' + ' The answer is: ' + game.questionArray[game.i].answer + '</li>')
-		$("#answer-box").append('<li class="list-group-item">' + 'Insert image here' + '</li>')
+
+		var answerDiv = $("<li>");
+		answerDiv.addClass("list-group-item");
+		answerDiv.text("The answer is: " + game.questionArray[game.i].answer)
+		$("#answer-box").append(answerDiv);
+
+		var imageDiv = $("<li>");
+		imageDiv.addClass("list-group-item");
+		imageDiv.text("Insert image here");
 
 		game.sideIntervalID = setTimeout(game.checkForNextQuestion,3000);
 
@@ -132,8 +187,6 @@ var game = {
 		
 		$("#title-box").text("How did you do?")
 		$("#time-box").append($("<h2>").attr("id","start-button").addClass("btn btn-secondary btn-lg btn-outline-secondary").text("Play again?"));
-		
-
 		$("#answer-box").append($("<li>").addClass("list-group-item").text("Correct: " + this.numCorrect))
 		$("#answer-box").append($("<li>").addClass("list-group-item").text("Inorrect: " + this.numIncorrect))
 		$("#answer-box").append($("<li>").addClass("list-group-item").text("Unanswered: " + this.numUnanswered))

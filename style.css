@@ -12,10 +12,6 @@
 	border: none;
 }
 
-#main-header{
-	border: none;
-}
-
 #answer-container{
 	border: none;
 	border-width: 0px;
@@ -26,15 +22,11 @@
 	margin: auto;
 }
 
-#title-container{
-	border: none;
-}
-
-#time-container{
-	border: none;
-}
-
 #start-button{
 	margin: auto;
+}
+
+.no-border{
+	border:none;
 }
 
