@@ -6,14 +6,11 @@ var game = {
 	numIncorrect: 0,
 	numUnanswered: 0,
 	questionArray: [],
-	mainIntervalID: null,
-	sideInternvalID: null,
+	mainTimeID: null,
+	sideTimeID: null,
 	timerID: null,
 	time: 30,
-	clockRunning: false,
 	i: -1,
-	resultsFlag: false,
-
 
 	questionGenerator: function (titleInput, choicesInput, answerInput) {
 		//creates a question object
@@ -22,9 +19,14 @@ var game = {
 		this.answer = answerInput;
 	}, // end function questionGenerator
 
+	initializePage: function () {
+		$("#title-container").html('<h2 id="start-button" class="btn btn-secondary btn-lg btn-outline-secondary">Start!</h2>');
+		game.createQuestions();
+	},
+
 	createQuestions: function () {
-		var questionOne = new this.questionGenerator("This is question one?",["Answer 1 Q1","Answer 2 Q1","Answer 3 Q1","Answer 4 Q1"],"Answer 3 Q1");
-		var questionTwo = new this.questionGenerator("This is question two?",["Answer 1 Q2","Answer 2 Q2","Answer 3 Q2","Answer 4 Q2"],"Answer 3 Q2");
+		var questionOne = new this.questionGenerator("This is question one?",["Answer 1 Q1","Answer 2 Q1","Answer 3 Q1"],"Answer 3 Q1");
+		var questionTwo = new this.questionGenerator("This is question two?",["Answer 1 Q2","Answer 2 Q2","Answer 3 Q2","Answer 4 Q2","Answer 5 Q2","Answer 6 Q2"],"Answer 3 Q2");
 		var questionThree = new this.questionGenerator("This is question three?",["Answer 1 Q3","Answer 2 Q3","Answer 3 Q3","Answer 4 Q3"],"Answer 3 Q3");
 		
 		this.questionArray.push(questionOne);
@@ -44,7 +46,6 @@ var game = {
 		game.i = 0;
 
 		game.nextQuestion();
-
 	},
 
 	nextQuestion: function () {
@@ -73,7 +74,7 @@ var game = {
 			$("#title-box").text("You ran out of time");
 			game.numUnanswered++;
 		}else if($(this).text() === game.questionArray[game.i].answer){
-			$("#title-box").text("Stop cheating");
+			$("#title-box").text("Correct");
 			game.numCorrect++;
 		}else{ 
 			$("#title-box").text("Wrong answer");
@@ -87,6 +88,17 @@ var game = {
 		game.sideIntervalID = setTimeout(game.checkForNextQuestion,3000);
 
 	}, //end function clickedAnswer
+
+	checkForNextQuestion: function () {
+		console.log("testlog")
+		game.i++;
+		console.log(game.i)
+		if(game.i < game.questionArray.length){
+			game.nextQuestion();
+		}else{
+			game.displayEndScreen();
+		}
+	},
 
 	countTime: function () {
 		game.time--;
@@ -109,23 +121,10 @@ var game = {
 		} //end for loop
 	}, //end function displayPossibleChoices
 
-
-	checkForNextQuestion: function () {
-		console.log("testlog")
-		game.i++;
-		console.log(game.i)
-		if(game.i < game.questionArray.length){
-			game.nextQuestion();
-		}else{
-			game.displayEndScreen();
-		}
-		
-	},
-
 	displayEndScreen: function () {
 		console.log("Display end screen")
 		$("#answer-box").empty();
-		$("#time-box").html('<h5 id="start-button" class="list-group-item-action">' + "Play Again?" + '</h5>');
+		$("#time-box").html('<h2 id="start-button" class="btn btn-secondary btn-lg btn-outline-secondary">Play again?</h2>');
 		$("#title-box").text("How did you do?")
 		$("#answer-box").append('<li class="list-group-item">' + 'Correct: ' + this.numCorrect + '</li>');
 		$("#answer-box").append('<li class="list-group-item">' + 'Incorrect: ' + this.numIncorrect + '</li>');
@@ -136,14 +135,8 @@ var game = {
 
 } // end object game
 
-
-game.createQuestions();
+game.initializePage();
 $("#start-button").on("click", game.reset);
-
-// game.initializeNewQuestion();
-
-
-
 
 
 }); // end document.ready
