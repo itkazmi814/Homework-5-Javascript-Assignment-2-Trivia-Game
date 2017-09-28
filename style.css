@@ -21,6 +21,11 @@
 	border-width: 0px;
 }
 
+#answer-box{
+	width: 50%;
+	margin: auto;
+}
+
 #title-container{
 	border: none;
 }
@@ -28,3 +33,8 @@
 #time-container{
 	border: none;
 }
+
+#start-button{
+	margin: auto;
+}
+

@@ -117,18 +117,26 @@ var game = {
 		$("#answer-box").empty();
 
 		for(var j = 0; j < this.questionArray[this.i].choices.length; j++){
-			$("#answer-box").append('<li id="choice'+(j+1)+'" class="possible-answer list-group-item list-group-item-action">'+this.questionArray[this.i].choices[j]+'</li>');
+			var newChoice = $("<li>");
+			newChoice.attr("id","choice"+(j+1));
+			newChoice.addClass("possible-answer list-group-item list-group-item-action");
+			newChoice.text(this.questionArray[this.i].choices[j])
+			$("#answer-box").append(newChoice);
 		} //end for loop
 	}, //end function displayPossibleChoices
 
 	displayEndScreen: function () {
 		console.log("Display end screen")
 		$("#answer-box").empty();
-		$("#time-box").html('<h2 id="start-button" class="btn btn-secondary btn-lg btn-outline-secondary">Play again?</h2>');
+		$("#time-box").empty();
+		
 		$("#title-box").text("How did you do?")
-		$("#answer-box").append('<li class="list-group-item">' + 'Correct: ' + this.numCorrect + '</li>');
-		$("#answer-box").append('<li class="list-group-item">' + 'Incorrect: ' + this.numIncorrect + '</li>');
-		$("#answer-box").append('<li class="list-group-item">' + 'Unanswered: ' + this.numUnanswered + '</li>');
+		$("#time-box").append($("<h2>").attr("id","start-button").addClass("btn btn-secondary btn-lg btn-outline-secondary").text("Play again?"));
+		
+
+		$("#answer-box").append($("<li>").addClass("list-group-item").text("Correct: " + this.numCorrect))
+		$("#answer-box").append($("<li>").addClass("list-group-item").text("Inorrect: " + this.numIncorrect))
+		$("#answer-box").append($("<li>").addClass("list-group-item").text("Unanswered: " + this.numUnanswered))
 
 		$("#start-button").on("click", game.reset);
 	}
