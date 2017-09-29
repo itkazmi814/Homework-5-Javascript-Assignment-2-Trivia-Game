@@ -9,7 +9,7 @@ var game = {
 	sideTimeID: null,
 	timerID: null,
 	time: 30, 	
-	i: -1,
+	i: -1, //used as a counter to determine which index in questionArray the game is currently on
 
 	questionArray: [
 		questionOne = {
@@ -21,7 +21,7 @@ var game = {
 
 		questionTwo = {
 			title: "Where is the best fish sandwich in Chicago?",
-			choices: ["MicDuck's","Paron's","Big & Little's","Jim's Original"],
+			choices: ["MicDuck's","Parson's","Big & Little's","Jim's Original"],
 			answer: "Jim's Original",
 			image: "assets/jims.jpg"
 		},
@@ -84,8 +84,6 @@ var game = {
 	},
 
 	nextQuestion: function () {
-		console.log("start new question")
-		//display question details
 		game.initializeNewQuestion();
 		//start timer
 		game.timerIntervalID = setInterval(game.countTime,1000)
@@ -133,7 +131,6 @@ var game = {
 
 	checkForNextQuestion: function () {
 		game.i++;
-		console.log(game.i)
 		if(game.i < game.questionArray.length){
 			game.nextQuestion();
 		}else{
